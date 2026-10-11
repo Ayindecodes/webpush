@@ -1,0 +1,377 @@
+@import "tailwindcss";
+@import "../styles/theme.css";
+
+/* Semantic tokens → Tailwind utilities (bg-surface, text-fg-muted, border-border, text-brand, …). */
+@theme inline {
+  --color-bg: var(--wx-bg);
+  --color-surface: var(--wx-surface);
+  --color-surface-2: var(--wx-surface-2);
+  --color-surface-3: var(--wx-surface-3);
+  --color-overlay: var(--wx-overlay);
+  --color-border: var(--wx-border);
+  --color-border-strong: var(--wx-border-strong);
+  --color-fg: var(--wx-fg);
+  --color-fg-muted: var(--wx-fg-muted);
+  --color-fg-subtle: var(--wx-fg-subtle);
+  --color-fg-inverse: var(--wx-fg-inverse);
+  --color-brand: var(--wx-brand);
+  --color-brand-hover: var(--wx-brand-hover);
+  --color-brand-fg: var(--wx-brand-fg);
+  --color-brand-text: var(--wx-brand-text);
+  --color-brand-soft: var(--wx-brand-soft);
+  --color-brand-line: var(--wx-brand-line);
+  --color-focus: var(--wx-focus);
+  --color-success: var(--wx-success);
+  --color-success-soft: var(--wx-success-soft);
+  --color-warning: var(--wx-warning);
+  --color-warning-soft: var(--wx-warning-soft);
+  --color-danger: var(--wx-danger);
+  --color-danger-soft: var(--wx-danger-soft);
+  --color-sev-critical: var(--wx-sev-critical);
+  --color-sev-high: var(--wx-sev-high);
+  --color-sev-medium: var(--wx-sev-medium);
+  --color-sev-low: var(--wx-sev-low);
+  --color-sev-info: var(--wx-sev-info);
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", Consolas, monospace;
+
+  /* Type scale: display / title / section / body / label / meta */
+  --text-display: 3rem;
+  --text-display--line-height: 1.05;
+  --text-display--letter-spacing: -0.035em;
+  --text-headline: 2.25rem;
+  --text-headline--line-height: 1.05;
+  --text-headline--letter-spacing: -0.035em;
+  --text-title: 1.375rem;
+  --text-title--line-height: 1.75rem;
+  --text-title--letter-spacing: -0.02em;
+  --text-section: 1.0625rem;
+  --text-section--line-height: 1.5rem;
+  --text-section--letter-spacing: -0.01em;
+  --text-body: 0.9375rem;
+  --text-body--line-height: 1.5rem;
+  --text-label: 0.8125rem;
+  --text-label--line-height: 1.125rem;
+  --text-meta: 0.75rem;
+  --text-meta--line-height: 1rem;
+
+  --radius-control: 12px;
+  --radius-panel: 16px;
+  --shadow-panel: var(--wx-shadow);
+}
+
+@layer base {
+  html,
+  body {
+    background: var(--wx-bg);
+    color: var(--wx-fg);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection {
+    background: var(--wx-brand-soft);
+    color: var(--wx-fg);
+  }
+  :focus-visible {
+    outline: 2px solid var(--wx-focus);
+    outline-offset: 2px;
+  }
+  * {
+    scrollbar-color: var(--wx-border-strong) transparent;
+  }
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.92em;
+  }
+}
+
+@layer utilities {
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+  .wx-enter {
+    animation: wx-enter 180ms ease-out both;
+  }
+  .wx-live-dot {
+    animation: wx-pulse 1.6s ease-in-out infinite;
+  }
+}
+
+@keyframes wx-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes wx-pulse {
+  50% {
+    opacity: 0.3;
+  }
+}
+
+/* ------------------------------------------------------------------ Browse mark animation
+ * While an investigation is running (data-active="true") the globe turns, a
+ * scan sweeps the address bar, and the cursor glides along the bar and clicks.
+ */
+.wx-mark .wx-m-scan,
+.wx-mark .wx-m-click {
+  opacity: 0;
+}
+.wx-mark .wx-m-meridian,
+.wx-mark .wx-m-cursor,
+.wx-mark .wx-m-scan,
+.wx-mark .wx-m-click {
+  transform-box: view-box;
+}
+.wx-mark .wx-m-meridian {
+  transform-origin: 12px 12px;
+}
+.wx-mark .wx-m-click {
+  transform-origin: 13.4px 11.3px;
+}
+.wx-mark[data-active="true"] .wx-m-meridian {
+  animation: wx-turn 4.8s ease-in-out infinite;
+}
+.wx-mark[data-active="true"] .wx-m-scan {
+  animation: wx-bar-scan 2.4s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+.wx-mark[data-active="true"] .wx-m-cursor {
+  animation: wx-cursor 4.8s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+.wx-mark[data-active="true"] .wx-m-click {
+  animation: wx-click 4.8s ease-out infinite;
+}
+@keyframes wx-turn {
+  0%, 100% { transform: scaleX(1); }
+  50% { transform: scaleX(0.18); }
+}
+@keyframes wx-bar-scan {
+  0% { transform: translateX(0); opacity: 0; }
+  12% { opacity: 0.55; }
+  70% { transform: translateX(24px); opacity: 0.55; }
+  71%, 100% { transform: translateX(24px); opacity: 0; }
+}
+@keyframes wx-cursor {
+  0%, 14% { transform: translate(0, 0); }
+  38%, 58% { transform: translate(-6px, 0); }
+  82%, 100% { transform: translate(0, 0); }
+}
+@keyframes wx-click {
+  0%, 40% { opacity: 0; transform: scale(0.3); }
+  44% { opacity: 0.9; transform: scale(0.5); }
+  56%, 100% { opacity: 0; transform: scale(1.4); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .wx-mark .wx-m-scan,
+  .wx-mark .wx-m-click {
+    display: none;
+  }
+}
+
+/* ------------------------------------------------------------------ Paper surface components */
+@utility card-ink {
+  border: 1.5px solid var(--wx-ink-line);
+  border-radius: 16px;
+  background: var(--wx-surface);
+  box-shadow: 6px 6px 0 var(--wx-ink-shadow);
+}
+/* Smaller offset for dense UI (list rows, small cards, icon tiles). */
+@utility card-ink-sm {
+  border: 1.5px solid var(--wx-ink-line);
+  border-radius: 14px;
+  background: var(--wx-surface);
+  box-shadow: 3px 3px 0 var(--wx-ink-shadow);
+}
+/* The quiet card: paper on paper with a hairline. */
+@utility panel {
+  border: 1px solid var(--wx-border);
+  border-radius: 16px;
+  background: var(--wx-surface);
+}
+@utility display {
+  font-size: clamp(1.75rem, 2.5vw, 2.25rem);
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+  font-weight: 600;
+}
+@utility eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--wx-fg-muted);
+}
+/* Halftone atmosphere: a positioned, masked layer kept away from body copy. */
+.halftone {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-repeat: no-repeat;
+  opacity: 0.75;
+}
+.halftone-hero {
+  background-image: url("/landing/halftone-hero.png");
+  background-size: 1250px auto;
+  background-position: right -170px center;
+  -webkit-mask-image: linear-gradient(to right, transparent 38%, black 62%);
+  mask-image: linear-gradient(to right, transparent 38%, black 62%);
+}
+.halftone-corner {
+  background-image: url("/landing/halftone-band.png");
+  background-size: 1000px auto;
+  background-position: left -380px top -200px;
+  opacity: 0.55;
+  -webkit-mask-image: radial-gradient(ellipse at top left, black 0%, transparent 55%);
+  mask-image: radial-gradient(ellipse at top left, black 0%, transparent 55%);
+}
+@media (max-width: 1023px) {
+  .halftone-hero {
+    background-size: 900px auto;
+    background-position: center bottom -140px;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 52%, black 78%);
+    mask-image: linear-gradient(to bottom, transparent 52%, black 78%);
+  }
+}
+
+/* ------------------------------------------------------------------ Hero globe animation (8 s story loop) */
+.wx-hero .meridian {
+  transform-box: view-box;
+  transform-origin: 200px 200px;
+  animation: wx-hero-meridian 12s linear infinite;
+}
+.wx-hero .url-reveal {
+  transform-box: fill-box;
+  transform-origin: left center;
+  animation: wx-hero-type 8s steps(23, end) infinite;
+}
+.wx-hero .caret {
+  animation: wx-hero-caret 1s steps(2, start) infinite;
+}
+.wx-hero .cursor {
+  transform-box: view-box;
+  animation: wx-hero-cursor 8s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+.wx-hero .ripple {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: wx-hero-ripple 8s ease-out infinite;
+}
+.wx-hero .scan {
+  transform-box: view-box;
+  animation: wx-hero-scan 8s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+.wx-hero .finding {
+  animation: wx-hero-finding 8s ease-out infinite;
+}
+.wx-hero .hotspot {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: wx-hero-hotspot 8s ease-out infinite;
+}
+@keyframes wx-hero-meridian {
+  0% { transform: scaleX(-1); }
+  50% { transform: scaleX(0); }
+  100% { transform: scaleX(1); }
+}
+@keyframes wx-hero-type {
+  0% { transform: scaleX(0); }
+  28%, 92% { transform: scaleX(1); }
+  100% { transform: scaleX(0); }
+}
+@keyframes wx-hero-caret {
+  to { visibility: hidden; }
+}
+@keyframes wx-hero-cursor {
+  0%, 28% { transform: translate(0, 0); }
+  40%, 82% { transform: translate(52px, -118px); }
+  42% { transform: translate(52px, -118px) scale(0.94); }
+  44% { transform: translate(52px, -118px); }
+  96%, 100% { transform: translate(0, 0); }
+}
+@keyframes wx-hero-ripple {
+  0%, 41% { opacity: 0; transform: scale(0.4); }
+  43% { opacity: 0.8; transform: scale(0.6); }
+  52%, 100% { opacity: 0; transform: scale(1.8); }
+}
+@keyframes wx-hero-scan {
+  0%, 44% { transform: translateY(-170px); opacity: 0; }
+  47% { opacity: 1; }
+  70% { transform: translateY(170px); opacity: 1; }
+  73%, 100% { transform: translateY(170px); opacity: 0; }
+}
+@keyframes wx-hero-finding {
+  0%, 66% { opacity: 0; transform: translateY(8px) scale(0.98); }
+  71%, 92% { opacity: 1; transform: none; }
+  100% { opacity: 0; transform: none; }
+}
+@keyframes wx-hero-hotspot {
+  0%, 64% { opacity: 0; transform: scale(0.2); }
+  69%, 92% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wx-hero .meridian { animation: none !important; transform: scaleX(0.55); }
+  .wx-hero .url-reveal,
+  .wx-hero .finding,
+  .wx-hero .hotspot { animation: none !important; opacity: 1 !important; transform: none !important; }
+  .wx-hero .cursor { animation: none !important; transform: translate(52px, -118px); }
+  .wx-hero .scan,
+  .wx-hero .ripple,
+  .wx-hero .caret { display: none; }
+}
+
+/* ------------------------------------------------------------------ Briefing "reading" scan line */
+.wx-scanline {
+  background: linear-gradient(to bottom, transparent, var(--wx-brand-soft) 70%, var(--wx-brand-line) 98%, transparent);
+  animation: wx-scanline 2.8s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+@keyframes wx-scanline {
+  0% { top: -4rem; opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wx-scanline { display: none; }
+}
+
+/* ------------------------------------------------------------------ Print (reports, briefings) */
+@media print {
+  aside[aria-label="Sidebar"],
+  header.sticky,
+  .no-print,
+  [aria-live="polite"].pointer-events-none {
+    display: none !important;
+  }
+  html,
+  body {
+    background: white !important;
+  }
+  main {
+    max-width: none !important;
+    padding: 0 !important;
+  }
+  .card-ink,
+  .card-ink-sm {
+    box-shadow: none !important;
+  }
+  a {
+    text-decoration: none !important;
+  }
+}

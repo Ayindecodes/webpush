@@ -1,0 +1,104 @@
+/*
+ * WEB X-RAY design tokens — colour.
+ *
+ * One look everywhere: warm paper and ink, with "Lens Teal" as the single
+ * brand accent. The app and the marketing site share it. "Ink" is the dark
+ * variant (the same palette with paper and ink swapped). Components consume
+ * semantic tokens only; this is the single file that assigns colour values.
+ *
+ * Contrast targets: body text ≥ 7:1, secondary text ≥ 4.5:1, brand text and
+ * brand-on-button ≥ 4.5:1 in both themes.
+ */
+
+/* Paper (default) */
+:root,
+[data-theme="light"],
+[data-surface="paper"] {
+  color-scheme: light;
+
+  --wx-bg: oklch(0.968 0.008 85);
+  --wx-surface: oklch(0.985 0.006 85);
+  --wx-surface-2: oklch(0.948 0.01 85);
+  --wx-surface-3: oklch(0.92 0.012 85);
+  --wx-overlay: oklch(0.2 0.01 85 / 0.4);
+  --wx-border: oklch(0.885 0.013 85);
+  --wx-border-strong: oklch(0.8 0.018 85);
+  --wx-fg: oklch(0.2 0.012 275);
+  --wx-fg-muted: oklch(0.45 0.012 85);
+  --wx-fg-subtle: oklch(0.54 0.014 85);
+  --wx-fg-inverse: oklch(0.968 0.008 85);
+  /* The "ink" line and offset shadow of card-ink. */
+  --wx-ink-line: oklch(0.2 0.012 275);
+  --wx-ink-shadow: oklch(0.2 0.012 275);
+
+  --wx-brand: oklch(0.52 0.105 212);
+  --wx-brand-hover: oklch(0.47 0.1 212);
+  --wx-brand-fg: oklch(0.99 0.004 212);
+  --wx-brand-text: oklch(0.46 0.1 212);
+  --wx-brand-soft: oklch(0.52 0.105 212 / 0.1);
+  --wx-brand-line: oklch(0.52 0.105 212 / 0.3);
+  --wx-focus: oklch(0.52 0.105 212);
+
+  --wx-success: oklch(0.5 0.12 150);
+  --wx-success-soft: oklch(0.5 0.12 150 / 0.1);
+  --wx-warning: oklch(0.55 0.12 70);
+  --wx-warning-soft: oklch(0.75 0.13 80 / 0.2);
+  --wx-danger: oklch(0.53 0.18 28);
+  --wx-danger-soft: oklch(0.54 0.18 28 / 0.09);
+
+  --wx-sev-critical: oklch(0.53 0.18 28);
+  --wx-sev-high: oklch(0.58 0.15 45);
+  --wx-sev-medium: oklch(0.6 0.13 72);
+  --wx-sev-low: oklch(0.53 0.07 245);
+  --wx-sev-info: oklch(0.54 0.014 85);
+
+  --wx-shadow: 0 1px 2px oklch(0.3 0.02 85 / 0.06), 0 12px 32px -14px oklch(0.3 0.02 85 / 0.24);
+}
+
+/* Ink (dark) */
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --wx-bg: oklch(0.165 0.008 275);
+  --wx-surface: oklch(0.2 0.009 275);
+  --wx-surface-2: oklch(0.235 0.01 275);
+  --wx-surface-3: oklch(0.27 0.011 275);
+  --wx-overlay: oklch(0.08 0.01 275 / 0.66);
+  --wx-border: oklch(0.3 0.011 275);
+  --wx-border-strong: oklch(0.4 0.012 275);
+  --wx-fg: oklch(0.95 0.008 85);
+  --wx-fg-muted: oklch(0.77 0.01 85);
+  --wx-fg-subtle: oklch(0.63 0.012 85);
+  --wx-fg-inverse: oklch(0.17 0.008 275);
+  --wx-ink-line: oklch(0.62 0.012 85);
+  --wx-ink-shadow: oklch(0.08 0.01 275);
+
+  --wx-brand: oklch(0.76 0.115 205);
+  --wx-brand-hover: oklch(0.81 0.11 205);
+  --wx-brand-fg: oklch(0.17 0.025 220);
+  --wx-brand-text: oklch(0.8 0.105 205);
+  --wx-brand-soft: oklch(0.76 0.115 205 / 0.13);
+  --wx-brand-line: oklch(0.76 0.115 205 / 0.4);
+  --wx-focus: oklch(0.8 0.11 205);
+
+  --wx-success: oklch(0.76 0.14 155);
+  --wx-success-soft: oklch(0.76 0.14 155 / 0.13);
+  --wx-warning: oklch(0.83 0.135 80);
+  --wx-warning-soft: oklch(0.83 0.135 80 / 0.13);
+  --wx-danger: oklch(0.72 0.16 25);
+  --wx-danger-soft: oklch(0.72 0.16 25 / 0.14);
+
+  --wx-sev-critical: oklch(0.72 0.16 25);
+  --wx-sev-high: oklch(0.77 0.14 50);
+  --wx-sev-medium: oklch(0.83 0.135 80);
+  --wx-sev-low: oklch(0.75 0.06 240);
+  --wx-sev-info: oklch(0.66 0.012 85);
+
+  --wx-shadow: 0 1px 2px oklch(0 0 0 / 0.3), 0 12px 32px -12px oklch(0 0 0 / 0.5);
+}
+
+/* Marketing pages are always paper, whatever the app theme. */
+[data-surface="paper"] {
+  background: var(--wx-bg);
+  color: var(--wx-fg);
+}

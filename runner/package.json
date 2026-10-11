@@ -1,0 +1,9 @@
+{
+  "name": "webxray-test-runner",
+  "private": true,
+  "description": "Isolated Node environment in which WEB X-RAY executes generated Playwright reproduction tests.",
+  "type": "module",
+  "dependencies": {
+    "@playwright/test": "1.63.0"
+  }
+}

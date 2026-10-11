@@ -1,0 +1,24 @@
+# Secrets and local state
+.env
+.data/
+.demo.log
+*.log
+
+# Python
+__pycache__/
+*.pyc
+backend/.venv/
+.pytest_cache/
+
+# Node
+node_modules/
+web/.next/
+web/next-env.d.ts
+runner/.runs/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.egg-info/

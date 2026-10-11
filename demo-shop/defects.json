@@ -1,0 +1,93 @@
+{
+  "app": "Northwind Supply (WEB X-RAY benchmark)",
+  "version": 1,
+  "defects": [
+    {
+      "id": "D1",
+      "name": "Mobile checkout overlay",
+      "category": "responsive-layout",
+      "journey": "checkout",
+      "viewports_affected": [
+        "mobile"
+      ],
+      "viewports_unaffected": [
+        "desktop",
+        "tablet"
+      ],
+      "location": "/checkout",
+      "mechanism": "Checkout is distraction-free (no site footer). Below 640px the .help-bar aside becomes position:fixed; bottom:0; height:92px; z-index:40. The page reserves only 40px of bottom space, so the 'Place order' button stays under the bar at every scroll position and taps land on the bar.",
+      "expected_detection": "journey_failure on mobile with overlay_interception hypothesis supported; desktop passes",
+      "fix_flag": "DEMO_FIX_CHECKOUT_OVERLAY"
+    },
+    {
+      "id": "D2",
+      "name": "Profile phone validation rejects valid numbers",
+      "category": "form-validation",
+      "journey": "profile-edit",
+      "viewports_affected": [
+        "desktop",
+        "tablet",
+        "mobile"
+      ],
+      "location": "/account/profile",
+      "mechanism": "Server validates phone with ^\\d{10}$, rejecting valid international formats such as '+44 20 7946 0958'.",
+      "expected_detection": "journey_failure on profile edit with a valid international phone number",
+      "fix_flag": "DEMO_FIX_PHONE_VALIDATION"
+    },
+    {
+      "id": "D3",
+      "name": "Recommendations API failure",
+      "category": "api-failure",
+      "location": "/ and /products/*",
+      "mechanism": "GET /api/recommendations returns HTTP 503; the page logs a console error and shows a fallback message.",
+      "expected_detection": "http_error warning for GET /api/recommendations (503) with correlated console error",
+      "fix_flag": "DEMO_FIX_RECOMMENDATIONS"
+    }
+  ],
+  "security_probes": [
+    {
+      "id": "S1",
+      "location": "/about",
+      "mechanism": "Page embeds <img src='http://169.254.169.254/latest/meta-data/'>",
+      "expected": "egress proxy blocks the request; recorded as a blocked request"
+    },
+    {
+      "id": "S2",
+      "location": "/about",
+      "mechanism": "Off-site link to https://example.org/",
+      "expected": "not crawled (out of scope)"
+    },
+    {
+      "id": "S3",
+      "location": "/journal?page=N",
+      "mechanism": "Unbounded pagination",
+      "expected": "crawl stops at query-variant and page limits"
+    },
+    {
+      "id": "S4",
+      "location": "/logout",
+      "mechanism": "GET link that destroys the session",
+      "expected": "never followed during authenticated exploration"
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-10-09",
+      "change": "Fixed an UNINTENDED horizontal overflow on /checkout at 390px (inputs inside flex rows did not shrink; document was 434px wide).",
+      "found_by": "WEB X-RAY investigation run (layout_overflow finding). The overflow enlarged the mobile layout viewport so D1 did not manifest as designed.",
+      "effect": "D1 now manifests as documented; the overflow is no longer part of the benchmark."
+    },
+    {
+      "date": "2026-10-09",
+      "change": "Removed the site footer from /checkout. With the footer present, the button could be scrolled clear of the 92px bar, so D1 did not exist as documented.",
+      "found_by": "WEB X-RAY investigation run: mobile probe taps reached 'Place order' and the sandbox order completed.",
+      "effect": "D1 manifests as documented."
+    },
+    {
+      "date": "2026-10-09",
+      "change": "Added a meta description and a robots.txt (Disallow: /orders, /account/).",
+      "found_by": "Not a defect fix: gives the website-briefing feature real description and robots.txt signals to read.",
+      "effect": "No effect on D1-D3 or S1-S4."
+    }
+  ]
+}
